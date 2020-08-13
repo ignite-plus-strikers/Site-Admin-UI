@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+
 class Navbar extends Component {
   render() {
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-dark" style={{backgroundColor: '#0D5C75'}}>
+        <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: '#0D5C75'}}>
           <a className="navbar-brand text-white" to="#">
             Strikers
           </a>

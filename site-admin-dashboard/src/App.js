@@ -10,11 +10,13 @@ import AdminList from "./components/pages/AdminList";
 import ScorerList from "./components/pages/ScorerList";
 import PageNotFound from "./components/pages/PageNotFound";
 import Home from "./components/pages/Home";
+import Header from "./components/Header";
 
 function App() {
   return (
     <div>
       <BrowserRouter>
+      <Header />
         <Navbar />
         <Layout>
           <Switch>

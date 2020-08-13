@@ -38,3 +38,8 @@
     transform: rotate(360deg);
   }
 }
+
+.google-btn {
+  margin-left: 40%;
+  margin-top: 70px
+}

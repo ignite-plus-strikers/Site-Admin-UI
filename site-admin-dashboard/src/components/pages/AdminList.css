@@ -6,6 +6,7 @@
     cursor: pointer;
     margin-top: 20px;
 
+
   }
   .newBtn{
     background-color:#0D5C75 ;
@@ -20,11 +21,12 @@
   .hdrCls {
     background-color: #0D5C75;
     color: #ffffff;
-    font-size: x-large;
+    font-size: large;
     font-weight: 400;
   }
 
   .cellCls {
     font-size: larger;
     font-weight: 300;
+    text-align: center;
   }
