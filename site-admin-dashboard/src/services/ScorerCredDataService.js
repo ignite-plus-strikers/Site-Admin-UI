@@ -4,11 +4,19 @@ const SCORERCRED_API_URL = "http://localhost:8080/cricket-tournament";
 
 class ScorerCredDataService {
   retrieveAllScorer() {
-    return axios.get(`${SCORERCRED_API_URL}/scorerCreds`);
+    return axios.get(`${SCORERCRED_API_URL}/scorer-creds`);
   }
 
   createScorer(scorer) {
-    return axios.post(`${SCORERCRED_API_URL}/scorerCred`, scorer);
+    return axios.post(`${SCORERCRED_API_URL}/scorer-cred`, scorer);
+  }
+
+  userRoleByEmail(userbyrole){
+    return axios.post(`${SCORERCRED_API_URL}/user-role`,userbyrole)
+  }
+
+  userCred(userCred){
+    return axios.post(`${SCORERCRED_API_URL}/user-cred`,userCred)
   }
 }
 

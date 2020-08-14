@@ -66,15 +66,33 @@ class AdminList extends Component {
 
   handleSubmit = () => {
     var admin = {
-      admin_firstname: this.state.admin_firstname,
-      admin_lastname: this.state.admin_lastname,
-      admin_email: this.state.admin_email,
+      adminFirstname: this.state.admin_firstname,
+      adminLastname: this.state.admin_lastname,
+      adminEmail: this.state.admin_email,
     };
     console.log(admin);
     AdminCredDataService.createAdmin(admin).then((response) => {
       this.setState({ open_form: false });
       this.retrieveAllAdmin();
     });
+
+    var userbyrole = {
+      userEmailId : this.state.admin_email,
+      userRole : "CABI_APPL_ADMIN"
+    };
+    AdminCredDataService.userRoleByEmail(userbyrole).then((response) => {
+      console.log(userbyrole)
+    })
+    
+    var userCred = {
+      userFirstname : this.state.admin_firstname,
+      userLastname : this.state.admin_lastname,
+      userEmail : this.state.admin_email 
+    };
+    AdminCredDataService.userCred(userCred).then((response) => {
+      console.log(userCred)
+    })
+
   };
 
   render() {

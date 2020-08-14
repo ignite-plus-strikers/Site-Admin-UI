@@ -66,15 +66,32 @@ class ScorerList extends Component {
 
   handleSubmit = () => {
     var scorer = {
-      scorer_firstname: this.state.scorer_firstname,
-      scorer_lastname: this.state.scorer_lastname,
-      scorer_email: this.state.scorer_email,
+      scorerFirstname: this.state.scorer_firstname,
+      scorerLastname: this.state.scorer_lastname,
+      scorerEmail: this.state.scorer_email,
     };
     console.log(scorer);
     ScorerCredDataService.createScorer(scorer).then((response) => {
       this.setState({ open_form: false });
       this.retrieveAllScorer();
     });
+
+    var userbyrole = {
+      userEmailId : this.state.scorer_email,
+      userRole : "CABI_APPL_SCORER"
+    };
+    ScorerCredDataService.userRoleByEmail(userbyrole).then((response) => {
+      console.log(userbyrole)
+    })
+
+    var userCred = {
+      userFirstname : this.state.scorer_firstname,
+      userLastname : this.state.scorer_lastname,
+      userEmail : this.state.scorer_email 
+    };
+    ScorerCredDataService.userCred(userCred).then((response) => {
+      console.log(userCred)
+    })
   };
 
   render() {
