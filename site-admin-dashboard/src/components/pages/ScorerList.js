@@ -31,9 +31,10 @@ class ScorerList extends Component {
     this.state = {
       scorers: [],
       open_form: false,
-      scorer_firstname: "",
-      scorer_lastname: "",
-      scorer_email: "",
+      open_error_form: false,
+      scorer_firstname: null,
+      scorer_lastname: null,
+      scorer_email: null,
     };
     this.retrieveAllScorer = this.retrieveAllScorer.bind(this);
   }
@@ -55,8 +56,14 @@ class ScorerList extends Component {
     });
   };
 
+  openErrorForm = (e) => {
+    this.setState({
+      open_error_form: true,
+    });
+  };
+
   handleClose = () => {
-    this.setState({ open_form: false });
+    this.setState({ open_form: false, open_error_form: false });
   };
   handleChange = (name) => (event) => {
     this.setState({
@@ -65,33 +72,32 @@ class ScorerList extends Component {
   };
 
   handleSubmit = () => {
-    var scorer = {
-      scorerFirstname: this.state.scorer_firstname,
-      scorerLastname: this.state.scorer_lastname,
-      scorerEmail: this.state.scorer_email,
-    };
-    console.log(scorer);
-    ScorerCredDataService.createScorer(scorer).then((response) => {
-      this.setState({ open_form: false });
-      this.retrieveAllScorer();
-    });
+    if (
+      this.state.scorer_firstname === null ||
+      this.state.scorer_lastname === null ||
+      this.state.scorer_email === null
+    ) {
+      this.openErrorForm();
+    } else {
+      var scorer = {
+        scorerFirstname: this.state.scorer_firstname,
+        scorerLastname: this.state.scorer_lastname,
+        scorerEmail: this.state.scorer_email,
+      };
+      console.log(scorer);
+      ScorerCredDataService.createScorer(scorer).then((response) => {
+        this.setState({ open_form: false });
+        this.retrieveAllScorer();
+      });
 
-    var userbyrole = {
-      userEmailId : this.state.scorer_email,
-      userRole : "CABI_APPL_SCORER"
-    };
-    ScorerCredDataService.userRoleByEmail(userbyrole).then((response) => {
-      console.log(userbyrole)
-    })
-
-    var userCred = {
-      userFirstname : this.state.scorer_firstname,
-      userLastname : this.state.scorer_lastname,
-      userEmail : this.state.scorer_email 
-    };
-    ScorerCredDataService.userCred(userCred).then((response) => {
-      console.log(userCred)
-    })
+      var userbyrole = {
+        userEmailId: this.state.scorer_email,
+        userRole: "CABI_APPL_SCORER",
+      };
+      ScorerCredDataService.userRoleByEmail(userbyrole).then((response) => {
+        console.log(userbyrole);
+      });
+    }
   };
 
   render() {
@@ -244,13 +250,6 @@ class ScorerList extends Component {
                   variant="outlined"
                   label="First Name"
                   onChange={this.handleChange("scorer_firstname")}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        First Name
-                      </InputAdornment>
-                    ),
-                  }}
                 />
                 <br />
                 <br />
@@ -261,13 +260,6 @@ class ScorerList extends Component {
                   variant="outlined"
                   label="Last Name"
                   onChange={this.handleChange("scorer_lastname")}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        Last Name
-                      </InputAdornment>
-                    ),
-                  }}
                 />
                 <br />
                 <br />
@@ -278,13 +270,6 @@ class ScorerList extends Component {
                   variant="outlined"
                   onChange={this.handleChange("scorer_email")}
                   label="Scorer Email"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        Scorer Email
-                      </InputAdornment>
-                    ),
-                  }}
                 />
                 <br></br>
                 <br></br>
@@ -309,6 +294,35 @@ class ScorerList extends Component {
                 color="secondary"
               >
                 Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={this.state.open_error_form}
+            TransitionComponent={Transition}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle id="alert-dialog-slide-title">
+              <span
+                style={{
+                  fontFamily: "HelveticaforTargetBold,Arial",
+                  color: "#646566",
+                  fontWeight: "bolder",
+                }}
+              >
+                All fields are required!
+              </span>
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  this.setState({ open_error_form: false });
+                }}
+                variant="outlined"
+              >
+                Okay
               </Button>
             </DialogActions>
           </Dialog>

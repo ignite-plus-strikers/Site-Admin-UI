@@ -15,9 +15,6 @@ class AdminCredDataService {
     return axios.post(`${ADMINCRED_API_URL}/user-role`,userbyrole)
   }
 
-  userCred(userCred){
-    return axios.post(`${ADMINCRED_API_URL}/user-cred`,userCred)
-  }
 }
 
 export default new AdminCredDataService();

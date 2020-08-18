@@ -14,10 +14,6 @@ class ScorerCredDataService {
   userRoleByEmail(userbyrole){
     return axios.post(`${SCORERCRED_API_URL}/user-role`,userbyrole)
   }
-
-  userCred(userCred){
-    return axios.post(`${SCORERCRED_API_URL}/user-cred`,userCred)
-  }
 }
 
 export default new ScorerCredDataService();

@@ -31,9 +31,10 @@ class AdminList extends Component {
     this.state = {
       admins: [],
       open_form: false,
-      admin_firstname: "",
-      admin_lastname: "",
-      admin_email: "",
+      open_error_form: false,
+      admin_firstname: null,
+      admin_lastname: null,
+      admin_email: null,
     };
     this.retrieveAllAdmin = this.retrieveAllAdmin.bind(this);
   }
@@ -55,8 +56,14 @@ class AdminList extends Component {
     });
   };
 
+  openErrorForm = (e) => {
+    this.setState({
+      open_error_form: true,
+    });
+  };
+
   handleClose = () => {
-    this.setState({ open_form: false });
+    this.setState({ open_form: false, open_error_form: false });
   };
   handleChange = (name) => (event) => {
     this.setState({
@@ -65,34 +72,32 @@ class AdminList extends Component {
   };
 
   handleSubmit = () => {
-    var admin = {
-      adminFirstname: this.state.admin_firstname,
-      adminLastname: this.state.admin_lastname,
-      adminEmail: this.state.admin_email,
-    };
-    console.log(admin);
-    AdminCredDataService.createAdmin(admin).then((response) => {
-      this.setState({ open_form: false });
-      this.retrieveAllAdmin();
-    });
+    if (
+      this.state.admin_firstname === null ||
+      this.state.admin_lastname === null ||
+      this.state.admin_email === null
+    ) {
+      this.openErrorForm();
+    } else {
+      var admin = {
+        adminFirstname: this.state.admin_firstname,
+        adminLastname: this.state.admin_lastname,
+        adminEmail: this.state.admin_email,
+      };
+      //console.log(admin);
+      AdminCredDataService.createAdmin(admin).then((response) => {
+        this.setState({ open_form: false });
+        this.retrieveAllAdmin();
+      });
 
-    var userbyrole = {
-      userEmailId : this.state.admin_email,
-      userRole : "CABI_APPL_ADMIN"
-    };
-    AdminCredDataService.userRoleByEmail(userbyrole).then((response) => {
-      console.log(userbyrole)
-    })
-    
-    var userCred = {
-      userFirstname : this.state.admin_firstname,
-      userLastname : this.state.admin_lastname,
-      userEmail : this.state.admin_email 
-    };
-    AdminCredDataService.userCred(userCred).then((response) => {
-      console.log(userCred)
-    })
-
+      var userbyrole = {
+        userEmailId: this.state.admin_email,
+        userRole: "CABI_APPL_ADMIN",
+      };
+      AdminCredDataService.userRoleByEmail(userbyrole).then((response) => {
+        console.log(userbyrole);
+      });
+    }
   };
 
   render() {
@@ -242,13 +247,6 @@ class AdminList extends Component {
                   variant="outlined"
                   label="First Name"
                   onChange={this.handleChange("admin_firstname")}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        First Name
-                      </InputAdornment>
-                    ),
-                  }}
                 />
                 <br />
                 <br />
@@ -259,13 +257,6 @@ class AdminList extends Component {
                   variant="outlined"
                   label="Last Name"
                   onChange={this.handleChange("admin_lastname")}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        Last Name
-                      </InputAdornment>
-                    ),
-                  }}
                 />
                 <br />
                 <br />
@@ -276,13 +267,6 @@ class AdminList extends Component {
                   variant="outlined"
                   onChange={this.handleChange("admin_email")}
                   label="Admin Email"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        Admin Email
-                      </InputAdornment>
-                    ),
-                  }}
                 />
                 <br></br>
                 <br></br>
@@ -307,6 +291,35 @@ class AdminList extends Component {
                 color="secondary"
               >
                 Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={this.state.open_error_form}
+            TransitionComponent={Transition}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle id="alert-dialog-slide-title">
+              <span
+                style={{
+                  fontFamily: "HelveticaforTargetBold,Arial",
+                  color: "#646566",
+                  fontWeight: "bolder",
+                }}
+              >
+                All fields are required!
+              </span>
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  this.setState({ open_error_form: false });
+                }}
+                variant="outlined"
+              >
+                Okay
               </Button>
             </DialogActions>
           </Dialog>
